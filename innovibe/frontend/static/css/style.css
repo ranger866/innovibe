@@ -1,0 +1,38 @@
+:root {
+    --main-color : rgb(0,0,180);
+    --second-color : rgba(255,255,255,0.2)
+}
+
+body {
+    margin: 0;
+}
+
+.login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login > .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--second-color);
+    backdrop-filter: blur(1rem);
+    border-radius: 1rem;
+    padding: 3rem;
+}
+
+.login > .form-container > .form-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login > .form-container > .form-head > .logo {
+    width: 55%;
+    mix-blend-mode: mu;
+}
