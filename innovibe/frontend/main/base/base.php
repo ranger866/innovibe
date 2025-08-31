@@ -20,28 +20,38 @@ $title = "";
                 <img src="/img/logo-tekad-vertikal.png" alt="TEKAD" class="logo">
                 <h2>Selamat Datang di TEKAD</h2>
             </div>
-            <form action="" method="post" class="form" id="form">
-                <div class="form-body">
-                    <label for="Role">Masuk Sebagai</label>
+            <form method="post" class="form" id="form">
+                <div class="role-body">
+                    <h4 class="role-head">Pilih Role</h4>
                     <div class="role-container">
-                        <input type="checkbox" name="role" id="role" class="role">Admin
-                        <input type="checkbox" name="role" id="role" class="role">Kepala Jurusan
-                        <input type="checkbox" name="role" id="role" class="role">Dosen
+                        <span>
+                            <input type="radio" id="admin" name="role" value="admin">
+                            <label for="admin">Admin</label>
+                        </span>
+                        <span>
+                            <input type="radio" id="kajur" name="role" value="kajur">
+                            <label for="kajur">Kepala Jurusan</label>
+                        </span>
+                        <span>
+                            <input type="radio" id="dosen" name="role" value="dosen">
+                            <label for="dosen">Dosen</label>
+                        </span>
                     </div>
                 </div>
                 <div class="form-body">
-                    <label for="username">Username</label>
+                    <label for="username">Username</label><br>
                     <input type="text" name="username" class="username" id="username">
                 </div>
                 <div class="form-body">
-                    <label for="password">Password</label>
+                    <label for="password">Password</label><br>
                     <input type="password" name="password" class="password" id="password">
+                    <button type="submit">Login</button>
                 </div>
             </form>
         </div>
     </div>
 
 
-    <script src="/js/script.js"></script>
+    <script type="module" src="/js/script.js"></script>
 </body>
 </html>

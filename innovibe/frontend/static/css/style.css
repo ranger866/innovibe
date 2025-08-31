@@ -1,10 +1,18 @@
+@font-face {
+    font-family: 'Roboto'; 
+    src: url(/fonts/Roboto-Regular.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
 :root {
     --main-color : rgb(0,0,180);
-    --second-color : rgba(255,255,255,0.2)
+    --second-color : rgba(255,255,255,0.2);
 }
 
 body {
     margin: 0;
+    font-family: 'Roboto';
 }
 
 .login {
@@ -12,6 +20,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: url(/img/icon-tekad.png) center/325px no-repeat;
 }
 
 .login > .form-container {
@@ -20,9 +29,11 @@ body {
     align-items: center;
     flex-direction: column;
     background: var(--second-color);
-    backdrop-filter: blur(1rem);
+    backdrop-filter: blur(7.5px);
     border-radius: 1rem;
-    padding: 3rem;
+    padding: 2rem;
+    margin: 30px;
+    box-shadow: 0 0 20px;
 }
 
 .login > .form-container > .form-head {
@@ -34,5 +45,94 @@ body {
 
 .login > .form-container > .form-head > .logo {
     width: 55%;
-    mix-blend-mode: mu;
+}
+
+.login > .form-container > .form-head > h2 {
+    margin: 20px 0 0 0;
+    text-align: center;
+}
+
+form > .role-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+form > .role-body > .role-head {
+    margin: 20px 0 0 0 ;
+    font-size: large;
+}
+
+form > .role-body > .role-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    padding: 10px;
+    gap: 10px;
+    margin: 0 0 10px 0;
+}
+
+form > .role-container > span {
+    margin: 0 10px 0 0;
+    user-select: none;
+}
+
+form > .role-container > span > label {
+    user-select: none;
+}
+
+form > .role-body > .role-container > span > input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+form > .role-body > .role-container > span > label {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: transparent;
+    color: black;
+    transition: all 0.3s ease;
+}
+
+form > .role-body > .role-container > span > input[type="radio"]:checked + label {
+    background-color: black;
+    font-weight: bold;
+    color: white;
+}
+
+form > .form-body {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form > .form-body > input {
+    width: 95%;
+    margin: -5px 0 20px 0;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px;
+}
+
+form >.form-body > button {
+    width: 101%;
+    font-size: large;
+    margin: 15px 0 0 0;
+    padding: 10px 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    box-shadow: 0 0 10px;
 }
