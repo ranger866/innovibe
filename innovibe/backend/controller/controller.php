@@ -82,8 +82,11 @@ class BaseController {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE username=? LIMIT 1");
         $stmt->execute([$data['username']]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($data['password'], $user['password'])) {
+    
+        // hashed_password
+        // if ($user && password_verify($data['password'], $user['password'])) {
+        
+        if ($user && ($data['password'] === $user['password'])) {
             echo json_encode([
                 "success" => true,
                 "user_id" => $user['user_id'],
