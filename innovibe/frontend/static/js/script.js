@@ -1,6 +1,5 @@
 import { doLogin, doLogout } from "./modules/auth.js";
-import { getAll, getOne, create, update, remove } from "./modules/crud.js";
-import { print } from "./modules/utils.js";
+import { saveUser, clearUser} from "./modules/helpers.js";
 
 document.getElementById("form")?.addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -16,15 +15,18 @@ document.getElementById("form")?.addEventListener("submit", async function(e) {
 
     const res = await doLogin(username, password);
     if (res.success) {
+        const {user_id, username, role} = res;
         alert(`Login berhasil sebagai ${role}`);
-        window.location.href = "http://siat.local/dashboard.php";
+        saveUser({user_id, username, role})
+        window.location.href = "http://50.50.50.150/dashboard.php";
     } else {
         alert(res.message);
     }
 });
 
 window.doLogoutHandler = async function () {
-    const res = await doLogout();
-    print(res);
+    await doLogout();
+    clearUser();
     alert("Logout berhasil");
+    window.location.href = "http://50.50.50.150";
 };

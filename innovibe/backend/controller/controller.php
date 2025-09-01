@@ -18,7 +18,13 @@ class BaseController {
             return;
         }
         $stmt = $this->pdo->query("SELECT * FROM {$this->table}");
-        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return [
+            "succes" => true,
+            "data" => [
+                $this->table => $data
+            ]
+        ];
     }
 
     // 🔹 GET berdasarkan ID
@@ -29,7 +35,13 @@ class BaseController {
         }
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey}=?");
         $stmt->execute([$id]);
-        echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return [
+            "succes" => true,
+            "data" => [
+                $this->table => $data
+            ]
+        ];
     }
 
     // 🔹 CREATE
@@ -87,17 +99,17 @@ class BaseController {
         // if ($user && password_verify($data['password'], $user['password'])) {
         
         if ($user && ($data['password'] === $user['password'])) {
-            echo json_encode([
+            return [
                 "success" => true,
-                "user_id" => $user['user_id'],
+                "id_user" => $user['id_user'],
                 "username" => $user['username'],
                 "role" => $user['role']
-            ]);
+            ];
         } else {
-            echo json_encode([
+            return [
                 "success" => false,
                 "message" => "Username atau password salah"
-            ]);
+            ];
         }
     }
 }

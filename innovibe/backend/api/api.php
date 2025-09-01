@@ -5,8 +5,8 @@ require_once '../controller/controller.php';
 
 // mapping entitas
 $entities = [
-    "users"       => ["table" => "users", "pk" => "user_id"],
-    "dosen"       => ["table" => "dosen", "pk" => "id_dos"],
+    "users"       => ["table" => "users", "pk" => "id_user"],
+    "prodi"       => ["table" => "prodi", "pk" => "id_prodi"],
     "mahasiswa"   => ["table" => "mahasiswa", "pk" => "id_mhs"],
     "mata_kuliah" => ["table" => "mata_kuliah", "pk" => "id_matkul"],
     "nilai"       => ["table" => "nilai", "pk" => "id_nil"],
@@ -58,7 +58,8 @@ switch ($action) {
 
     case "login":
         $data = json_decode(file_get_contents("php://input"), true);
-        $controller->login($data);
+        $result = $controller->login($data);
+        echo json_encode($result);
         break;
 
     default:

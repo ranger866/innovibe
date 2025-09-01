@@ -1,0 +1,199 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url(/fonts/Roboto-Regular.ttf) format(truetype);
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto';
+    background: #f9f9f9;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+    background: url(/img/logo-tekad.png) center/50% no-repeat;
+    backdrop-filter: blur(5px);
+}
+
+/* ===== Sidebar ===== */
+aside {
+    width: 200px;
+    background: white;
+    box-shadow: 0 0 5px;
+    color: black;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+aside h2 {
+    margin: 0 0 20px;
+    font-size: 18px;
+    text-align: center;
+}
+
+aside a {
+    color: black;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    display: block;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+}
+
+aside a:hover, aside a.active {
+    background: #2c3e50;
+    color: white;
+}
+
+/* ===== Overlay (mobile) ===== */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
+}
+
+/* ===== Konten utama ===== */
+.content-wrapper {
+    margin-left: 220px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+}
+
+/* ===== Header ===== */
+header {
+    background: white;
+    box-shadow: 0 0 10px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header img {
+    width: 215px;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+header .logoutButton {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+header .menu-toggle:hover {
+    background: black;
+    color: white;
+}
+
+/* ===== Toggle Button (Mobile) ===== */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: black;
+    font-size: 26px;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+/* ===== Tombol close di sidebar ===== */
+.close-sidebar {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+/* ===== Main Content ===== */
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0);
+    margin: 20px 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    aside {
+        width: 160px;
+    }
+    .content-wrapper {
+        margin-left: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        background: url(/img/logo-tekad-vertikal.png) center/75% no-repeat;
+    }
+    
+    header img {
+        width: 150px;
+    }
+    
+    aside {
+        width: 220px;
+        left: -300px;
+    }
+
+    aside.show {
+        left: 0;
+    }
+
+    aside span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    aside h2 {
+        margin: 10px 0 20px 0;
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .content-wrapper {
+        margin-left: 0;
+    }
+
+    .menu-toggle,
+    .close-sidebar {
+        display: block;
+    }
+    .overlay.show {
+        display: block;
+    }
+}

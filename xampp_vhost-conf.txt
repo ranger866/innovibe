@@ -1,0 +1,55 @@
+#if servername not working make sure to edit your host config
+#C:\Windows\System32\drivers\etc\host ==> make sure your virtual
+#domain is included
+#127.0.0.1  innovibe.local
+
+ServerName innovibe.local
+    DocumentRoot "D:/Dani/coding/web/innovibe/innovibe/frontend/main/view"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/main/view">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /api "D:/Dani/coding/web/innovibe/innovibe/backend/api"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/backend/api">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /base "D:/Dani/coding/web/innovibe/innovibe/frontend/main/base"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/main/base">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /auth "D:/Dani/coding/web/innovibe/innovibe/frontend/main/auth"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/main/auth">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /img "D:/Dani/coding/web/innovibe/innovibe/frontend/assets/img"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/assets/img">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /fonts "D:/Dani/coding/web/innovibe/innovibe/frontend/assets/fonts"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/assets/fonts">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /css "D:/Dani/coding/web/innovibe/innovibe/frontend/static/css"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/static/css">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    Alias /js "D:/Dani/coding/web/innovibe/innovibe/frontend/static/js"
+    <Directory "D:/Dani/coding/web/innovibe/innovibe/frontend/static/js">
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+</VirtualHost>
