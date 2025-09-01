@@ -12,5 +12,5 @@ try {
         PDO::ATTR_EMULATE_PREPARES   => false
     ]);
 } catch (PDOException $e) {
-    die($e->getMessage());
+    die(json_encode(["success" => false, "message" => "DB Connection failed: " . $e->getMessage()]));
 }

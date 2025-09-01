@@ -1,10 +1,10 @@
 import { requireLogin } from "./modules/helpers.js";
-import { getAll, create, update, remove} from "./modules/crud.js";
+import { getAll } from "./modules/crud.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const user = requireLogin();
 
-    // tampilkan username
+    // tampilkan username di header
     const usernameDisplay = document.getElementById("usernameDisplay");
     if (user && usernameDisplay) {
         usernameDisplay.textContent = user.username;
@@ -13,25 +13,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // render sidebar sesuai role
     renderSidebar(user.role);
 
+    // aktifkan highlight menu
     highlightActiveLink();
 
-    // toggle sidebar di mobile
+    // tampilkan data jumlah di beranda
+    await loadDashboardMetrics();
+
+    // toggle sidebar untuk mobile
     const menuToggle = document.getElementById("menuToggle");
     const sidebar = document.getElementById("sidebar");
-    const closeSidebar = document.getElementById("closeSidebar");
     const overlay = document.getElementById("overlay");
 
     if (menuToggle && sidebar && overlay) {
         menuToggle.addEventListener("click", () => {
             sidebar.classList.add("show");
             overlay.classList.add("show");
-        });
-    }
-
-    if (closeSidebar && sidebar && overlay) {
-        closeSidebar.addEventListener("click", () => {
-            sidebar.classList.remove("show");
-            overlay.classList.remove("show");
         });
     }
 
@@ -43,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ========== Sidebar Renderer ==========
+/* ===== RENDER SIDEBAR SESUAI ROLE ===== */
 function renderSidebar(role) {
     const sidebar = document.getElementById("sidebar");
     if (!sidebar) return;
@@ -52,53 +48,88 @@ function renderSidebar(role) {
         <a href="#beranda" class="active">🏠 Beranda</a>
     `;
 
-    // mapping role → menu tambahan
     const roleMenus = {
         admin: [
-            { href: "#artikel", label: "📰 Artikel" },
             { href: "#users", label: "👥 Data Users" },
-            { href: "#matkul", label: "📘 Mata Kuliah" }
+            { href: "#matkul", label: "📘 Mata Kuliah" },
+            { href: "#mahasiswa", label: "📋 Mahasiswa"},
+            { href: "#prodi", label: "🏫 Data Prodi"}
         ],
         dosen: [
-            { href: "#artikel", label: "📰 Artikel" },
-            { href: "#input-nilai", label: "✏️ Input Nilai" }
+            { href: "#inputNilai", label: "✏️ Input Nilai" }
         ],
         kajur: [
-            { href: "#artikel", label: "📰 Artikel" },
-            { href: "#rekap-nilai", label: "📊 Lihat Rekap Nilai" }
+            { href: "#rekapNilai", label: "📊 Rekap Nilai" }
         ]
     };
 
-    // jika role ada di config, tambah menunya
     if (roleMenus[role]) {
         roleMenus[role].forEach(item => {
             menu += `<a href="${item.href}">${item.label}</a>`;
         });
     }
 
-    // sisipkan tombol close di atas menu
     sidebar.innerHTML = `
-    <span>
         <h2>Menu</h2>
-    </span>
-    ${menu}
+        ${menu}
     `;
 }
 
+/* ===== HIGHLIGHT & NAVIGASI MENU ===== */
 function highlightActiveLink() {
     const links = document.querySelectorAll("#sidebar a");
+    const sections = document.querySelectorAll("main section");
+
+    function showSection(id) {
+        sections.forEach(sec => {
+            sec.style.display = sec.id === id ? "block" : "none";
+        });
+        // Simpan section aktif di hash URL
+        if (id !== "beranda") {
+            window.location.hash = id;
+        } else {
+            history.replaceState(null, null, " "); // hilangkan hash jika beranda
+        }
+    }
 
     links.forEach(link => {
         link.addEventListener("click", (e) => {
-            // hapus aktif dari semua link
+            e.preventDefault();
+
+            // hapus active di semua
             links.forEach(l => l.classList.remove("active"));
-            // beri aktif ke link yang diklik
             link.classList.add("active");
+
+            // ambil target id dari href (#beranda, #users, dll)
+            const targetId = link.getAttribute("href").replace("#", "");
+            showSection(targetId);
         });
     });
+
+    // Tampilkan default sesuai hash URL
+    const hash = window.location.hash.replace("#", "");
+    const defaultSection = hash || "beranda";
+
+    // Aktifkan link sidebar sesuai hash
+    links.forEach(l => l.classList.remove("active"));
+    const activeLink = Array.from(links).find(l => l.getAttribute("href") === `#${defaultSection}`);
+    if (activeLink) activeLink.classList.add("active");
+
+    showSection(defaultSection);
 }
 
-function getAllData(table) {
-    getAll(table);
-    
+
+/* ===== LOAD DASHBOARD DATA ===== */
+async function loadDashboardMetrics() {
+    try {
+        const users = await getAll("users");
+        const mahasiswa = await getAll("mahasiswa");
+        const matkul = await getAll("mata_kuliah");
+
+        document.getElementById("countUsers").textContent = users?.data?.length ?? 0;
+        document.getElementById("countMahasiswa").textContent = mahasiswa?.data?.length ?? 0;
+        document.getElementById("countMatkul").textContent = matkul?.data?.length ?? 0;
+    } catch (err) {
+        console.error("Gagal mengambil data dashboard:", err);
+    }
 }

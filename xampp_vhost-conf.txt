@@ -2,6 +2,7 @@
 #C:\Windows\System32\drivers\etc\host ==> make sure your virtual
 #domain is included
 #127.0.0.1  innovibe.local
+#rename innovibe_dump to sql *remove the .txt extension
 
 ServerName innovibe.local
     DocumentRoot "{your_DocRoot}innovibe/frontend/main/view"

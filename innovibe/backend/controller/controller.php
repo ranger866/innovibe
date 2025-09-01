@@ -19,12 +19,7 @@ class BaseController {
         }
         $stmt = $this->pdo->query("SELECT * FROM {$this->table}");
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return [
-            "succes" => true,
-            "data" => [
-                $this->table => $data
-            ]
-        ];
+        echo json_encode(["success" => true, "data" => $data]);
     }
 
     // 🔹 GET berdasarkan ID
@@ -36,25 +31,23 @@ class BaseController {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey}=?");
         $stmt->execute([$id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return [
-            "succes" => true,
-            "data" => [
-                $this->table => $data
-            ]
-        ];
+        echo json_encode(["success" => true, "data" => $data]);
     }
 
-    // 🔹 CREATE
+    // 🔹 CREATE (store) untuk users dengan hash password
     public function store($data, $role) {
-        // khusus admin untuk users & mata_kuliah
         if (($this->table === "users" || $this->table === "mata_kuliah") && $role !== "admin") {
             echo json_encode(["success" => false, "message" => "Unauthorized. Only admin can create {$this->table}."]);
             return;
         }
-        // khusus dosen untuk nilai
         if ($this->table === "nilai" && $role !== "dosen") {
             echo json_encode(["success" => false, "message" => "Unauthorized. Only dosen can create nilai."]);
             return;
+        }
+
+        // Hash password jika table = users
+        if ($this->table === "users" && isset($data['password'])) {
+            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
         }
 
         $cols = implode(",", array_keys($data));
@@ -89,27 +82,35 @@ class BaseController {
         echo json_encode(["success" => $result]);
     }
 
-    // 🔑 LOGIN (khusus users)
+    // 🔑 LOGIN
     public function login($data) {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE username=? LIMIT 1");
         $stmt->execute([$data['username']]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-        // hashed_password
-        // if ($user && password_verify($data['password'], $user['password'])) {
-        
-        if ($user && ($data['password'] === $user['password'])) {
-            return [
+
+        if ($user && password_verify($data['password'], $user['password'])) {
+            // Simpan session
+            $_SESSION['id_user']  = $user['id_user'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role']     = $user['role'];
+
+            echo json_encode([
                 "success" => true,
-                "id_user" => $user['id_user'],
-                "username" => $user['username'],
-                "role" => $user['role']
-            ];
+                "data"    => [
+                    "id_user"  => $user['id_user'],
+                    "username" => $user['username'],
+                    "role"     => $user['role']
+                ]
+            ]);
         } else {
-            return [
-                "success" => false,
-                "message" => "Username atau password salah"
-            ];
+            echo json_encode(["success" => false, "message" => "Username atau password salah"]);
         }
+    }
+
+    // 🔑 LOGOUT
+    public function logout() {
+        session_unset();
+        session_destroy();
+        echo json_encode(["success" => true, "message" => "Logout berhasil"]);
     }
 }

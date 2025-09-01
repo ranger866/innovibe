@@ -1,0 +1,335 @@
+/* ===== FONT ===== */
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ===== GLOBAL ===== */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #f5f6fa;
+  color: #333;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+aside {
+  width: 220px;
+  background: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,1);
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; bottom: 0; left: 0;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+aside h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+aside a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+aside a:hover,
+aside a.active {
+  background: #2c3e50;
+  color: #fff;
+}
+
+/* ===== OVERLAY (mobile) ===== */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 900;
+}
+.overlay.show {
+  display: block;
+}
+
+/* ===== CONTENT WRAPPER ===== */
+.content-wrapper {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,1);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header img.logo {
+  width: 200px;
+  max-width: 60%;
+}
+
+header .user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+header .logoutButton {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+header .logoutButton:hover {
+  background: #c0392b;
+}
+
+/* ===== MENU TOGGLE (mobile) ===== */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0px 10px rgba(0,0,0,1);
+  margin: 20px 0;
+  overflow-x: auto; /* jika chart terlalu lebar, scroll horizontal */
+}
+
+.card canvas {
+  max-width: 100% !important;  /* canvas tidak melebihi card */
+  height: auto !important;      /* proporsional */
+  display: block;
+  margin: 0 auto;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.metrics-grid .card {
+  text-align: center;
+  font-size: 18px;
+}
+
+/* ===== MODAL ===== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1100;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  min-width: 320px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content input,
+.modal-content select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-actions .save {
+  background: #2ecc71;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-actions .save:hover {
+  background: #27ae60;
+}
+
+.modal-actions .cancel {
+  background: #bdc3c7;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-actions .cancel:hover {
+  background: #95a5a6;
+}
+
+/* ===== BUTTONS ===== */
+.button-add {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 2px 6px rgba(0,0,0,15);
+}
+
+.button-add:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.table-rekap {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+.table-rekap th, .table-rekap td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .content-wrapper {
+    margin-left: 200px;
+  }
+  aside {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  aside {
+    width: 200px;
+    left: -250px;
+  }
+  aside.show {
+    left: 0;
+  }
+  .content-wrapper {
+    margin-left: 0;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  header img.logo {
+    width: 155px;
+  }
+}
+
+@media (max-width: 480px) {
+  header img.logo {
+    width: 145px;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+/* ===== MODAL RESPONSIVE UNTUK MOBILE ===== */
+  .modal-content {
+    width: 80%;          /* hampir penuh layar */
+    max-width: none;     /* hapus batasan desktop */
+    min-width: unset;
+    padding: 15px;       /* lebih compact */
+    border-radius: 8px;  /* sedikit lebih kecil */
+    max-height: 90vh;    /* tinggi maksimal */
+    overflow-y: auto;    /* scroll jika konten tinggi */
+  }
+
+  .modal-content h3 {
+    font-size: 1rem;
+  }
+
+  .modal-content input,
+  .modal-content select {
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  .modal-actions .save,
+  .modal-actions .cancel {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .table-rekap {
+    font-size: 12px;
+  }
+}

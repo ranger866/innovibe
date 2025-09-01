@@ -1,67 +1,86 @@
 <?php
-require_once '../connection/database.php';
-require_once '../connection/migrate_password.php';
-require_once '../controller/controller.php';
+require_once "../connection/database.php";
+require_once "../controller/controller.php";
+session_start();
 
-// mapping entitas
-$entities = [
-    "users"       => ["table" => "users", "pk" => "id_user"],
-    "prodi"       => ["table" => "prodi", "pk" => "id_prodi"],
-    "mahasiswa"   => ["table" => "mahasiswa", "pk" => "id_mhs"],
-    "mata_kuliah" => ["table" => "mata_kuliah", "pk" => "id_matkul"],
-    "nilai"       => ["table" => "nilai", "pk" => "id_nil"],
-];
-
-// ambil parameter dari URL
 $entity = $_GET['entity'] ?? null;
-$action = $_GET['action'] ?? 'index';
+$action = $_GET['action'] ?? null;
 $id     = $_GET['id'] ?? null;
+$role   = $_SESSION['role'] ?? "guest";
 
-if (!$entity || !isset($entities[$entity])) {
-    echo json_encode(["error" => "Entity not found"]);
+// Validasi dasar
+if (!$entity || !$action) {
+    echo json_encode(["success" => false, "message" => "Invalid request"]);
     exit;
 }
 
-$config = $entities[$entity];
-$controller = new BaseController($pdo, $config['table'], $config['pk']);
+// Daftar views
+$views = [
+    "v_dosen", "v_dosen_matkul", "v_dosen_matkul_prodi",
+    "v_mahasiswa_prodi", "v_matkul_prodi",
+    "v_nilai_mhs_dosen", "v_nilai_mhs_matkul", "v_nilai_mhs_prodi"
+];
 
-// routing
+// Jika request untuk view
+if (in_array($entity, $views)) {
+    if ($action === "index") {
+        if ($entity === "v_nilai_mhs_prodi" && $role !== "kajur") {
+            echo json_encode(["success" => false, "message" => "Unauthorized"]);
+            exit;
+        }
+        if ($entity === "v_nilai_mhs_dosen" && $role !== "dosen") {
+            echo json_encode(["success" => false, "message" => "Unauthorized"]);
+            exit;
+        }
+        $stmt = $pdo->query("SELECT * FROM {$entity}");
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(["success" => true, "data" => $data]);
+    }
+    exit;
+}
+
+// Map tabel
+$tableMap = [
+    "users"       => "id_user",
+    "mahasiswa"   => "id_mhs",
+    "mata_kuliah" => "id_matkul",
+    "nilai"       => "id_nil",
+    "prodi"       => "id_prodi"
+];
+
+if (!isset($tableMap[$entity])) {
+    echo json_encode(["success" => false, "message" => "Unknown entity"]);
+    exit;
+}
+
+$controller = new BaseController($pdo, $entity, $tableMap[$entity]);
+
+// Tangani aksi
 switch ($action) {
-    case "index":
-        $role = $_GET['role'] ?? null;
-        $controller->index($role);
+    case "index":  
+        $controller->index($role); 
         break;
-
-    case "show":
-        $role = $_GET['role'] ?? null;
-        $controller->show($id, $role);
+    case "show":   
+        $controller->show($id, $role); 
         break;
-
-    case "store":
-        $data = json_decode(file_get_contents("php://input"), true);
-        $role = $data['role_request'] ?? null;
-        unset($data['role_request']);
-        $controller->store($data, $role);
+    case "store":  
+        $controller->store(json_decode(file_get_contents("php://input"), true), $role); 
         break;
-
-    case "update":
-        $data = json_decode(file_get_contents("php://input"), true);
-        $role = $data['role_request'] ?? null;
-        unset($data['role_request']);
-        $controller->update($id, $data, $role);
+    case "update": 
+        $controller->update($id, json_decode(file_get_contents("php://input"), true), $role); 
         break;
-
-    case "delete":
-        $role = $_GET['role'] ?? null;
-        $controller->delete($id, $role);
+    case "delete": 
+        $controller->delete($id, $role); 
         break;
-
-    case "login":
-        $data = json_decode(file_get_contents("php://input"), true);
-        $result = $controller->login($data);
-        echo json_encode($result);
+    case "login":  
+        $controller->login(json_decode(file_get_contents("php://input"), true)); 
         break;
-
-    default:
-        echo json_encode(["error" => "Invalid action"]);
+    case "logout":
+        // Logout: hapus session dan kirim respon JSON
+        session_unset();
+        session_destroy();
+        echo json_encode(["success" => true, "message" => "Logout berhasil"]);
+        break;
+    default: 
+        echo json_encode(["success" => false, "message" => "Unknown action"]);
 }

@@ -1,3 +1,4 @@
+/* ===== FONT ===== */
 @font-face {
     font-family: 'Roboto'; 
     src: url(/fonts/Roboto-Regular.ttf) format("truetype");
@@ -21,6 +22,7 @@ body {
     justify-content: center;
     align-items: center;
     background: url(/img/icon-tekad.png) center/325px no-repeat;
+    padding: 1rem;
 }
 
 .login > .form-container {
@@ -34,6 +36,8 @@ body {
     padding: 2rem;
     margin: 30px;
     box-shadow: 0 0 20px;
+    width: 100%;
+    max-width: 400px;
 }
 
 .login > .form-container > .form-head {
@@ -44,7 +48,8 @@ body {
 }
 
 .login > .form-container > .form-head > .logo {
-    width: 55%;
+    width: 75%;
+    margin: 10px 0 0 0;
 }
 
 .login > .form-container > .form-head > h2 {
@@ -52,68 +57,23 @@ body {
     text-align: center;
 }
 
-form > .role-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-}
-
-form > .role-body > .role-head {
-    margin: 20px 0 0 0 ;
-    font-size: large;
-}
-
-form > .role-body > .role-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    padding: 10px;
-    gap: 10px;
-    margin: 0 0 10px 0;
-}
-
-form > .role-container > span {
-    margin: 0 10px 0 0;
-    user-select: none;
-}
-
-form > .role-container > span > label {
-    user-select: none;
-}
-
-form > .role-body > .role-container > span > input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-form > .role-body > .role-container > span > label {
-    display: inline-block;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    background: transparent;
-    color: black;
-    transition: all 0.3s ease;
-}
-
-form > .role-body > .role-container > span > input[type="radio"]:checked + label {
-    background-color: black;
-    font-weight: bold;
-    color: white;
+/* ===== FORM BODY ===== */
+form {
+    width: 100%;
+    padding: 15px;
 }
 
 form > .form-body {
     display: flex;
     width: 100%;
-    height: auto;
     flex-direction: column;
     justify-content: center;
+    margin: 1.25rem 0 0 0;
+    gap: 5px;
+}
+
+form > .form-body > label {
+    margin: 0 0 -5px 0;
 }
 
 form > .form-body > input {
@@ -125,7 +85,7 @@ form > .form-body > input {
     box-shadow: 0 0 10px;
 }
 
-form >.form-body > button {
+form > .form-body > button {
     width: 101%;
     font-size: large;
     margin: 15px 0 0 0;
@@ -134,5 +94,34 @@ form >.form-body > button {
     border-radius: 10px;
     background-color: black;
     color: white;
-    box-shadow: 0 0 10px;
+    box-shadow: 0 0 10px white;
+    cursor: pointer;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .login {
+        background-size: 220px;
+    }
+    .login > .form-container {
+        margin: 10px;
+        padding: 1.75rem;
+    }
+
+    form > .form-body > label {
+        margin: -5px 0 0 0;
+    }
+
+    form > .form-body > input {
+        width: 93%;
+    }
+
+    form > .form-body > input,
+    form > .form-body > button {
+        font-size: 16px;
+    }
+
+    form > .form-body > button {
+        padding: 12px 0;
+    }
 }
